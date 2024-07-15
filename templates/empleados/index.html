@@ -1,0 +1,62 @@
+{% include 'empleados/header.html' %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-danger" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Empleados</title>
+    <!-- Incluimos Bootstrap para los estilos -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Empleados</h1>
+        <br>
+        <a href="{{ url_for('create') }}" class="btn btn-success">Ingresar nuevo empleado</a>
+        <br><br>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Foto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empleado in empleados %}
+                <tr>
+                    <td>{{ empleado[0] }}</td>
+                    <td>{{ empleado[1] }}</td>
+                    <td>{{ empleado[2] }}</td>
+                    <td>
+                        {% if empleado[3] %}
+                        <img class="img-thumbnail" width="100" src="{{ url_for('uploads', nombreFoto=empleado[3]) }}" alt="">
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" href="/edit/{{ empleado[0] }}">Editar</a> |
+                        <a class="btn btn-danger" onclick="return confirm('¿Desea borrar al empleado?')" href="/destroy/{{ empleado[0] }}">Eliminar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Incluimos los scripts de Bootstrap para la funcionalidad de JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
+{% include 'empleados/footer.html' %}
